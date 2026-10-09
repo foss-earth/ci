@@ -22,8 +22,9 @@ node node_modules/@foss-earth/ci/bin/conformance.mjs --consumer . --trusted-rele
 ```
 
 The publication file explicitly identifies the intended source and selected
-branch/tag refs. Every reachable raw parent is inspected, including annotated
-tag targets. A branch-only scope is reported as such. Missing refs/objects,
+branch/tag refs. Every reachable raw parent and annotated tag's tagger/trailers
+are inspected, including nested tag targets. A branch-only scope is reported
+as such. Missing refs/objects,
 malformed metadata, shallow history, grafts, replacement refs or source drift
 fail incomplete with exit 2. Complete policy violations exit 1; only a clean
 complete scope exits 0. No inspected hooks or application code run, and mailmap
@@ -37,7 +38,10 @@ release descriptor with source/artifact/policy/file digests. Consumers pin the
 reviewed source SHA in their actual workflow and install the exact archive.
 No neighboring source link qualifies a production install.
 
-Public exports are audit, policy, fixtures, conformance, templates and candidate.
+Public exports are audit, policy, fixtures, conformance, templates, candidate,
+controller and GitHub check metadata gateway. The [trusted service contract](docs/controller.md)
+binds clean staging, final merge/squash metadata, integration/conformance checks
+and guarded complete-snapshot publication; missing hosted bindings fail closed.
 The scaffold executable prints proposed files by default; `--write-empty` only
 writes absent files in a primary writer's assigned empty destination. Each
 repository adopts the caller explicitly, including docs/data/assets/.github.

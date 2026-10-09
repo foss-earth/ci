@@ -17,7 +17,9 @@
     "./fixtures": "./fixtures/matrix-v1.json",
     "./conformance": "./src/conformance.mjs",
     "./templates": "./src/templates.mjs",
-    "./candidate": "./src/candidate.mjs"
+    "./candidate": "./src/candidate.mjs",
+    "./controller": "./src/controller.mjs",
+    "./github-checks": "./src/github-checks.mjs"
   },
   "files": ["bin", "src", "policy", "fixtures", "templates", "schemas", "docs", ".github/workflows", "README.md", "CONTRIBUTING.md", "AGENTS.md", "LICENSE", "PROVENANCE.json"],
   "scripts": {

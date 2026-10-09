@@ -4,13 +4,13 @@ import { resolve } from 'node:path';
 import { audit, readJson } from '../src/audit.mjs';
 import { git, oid, refName } from '../src/git.mjs';
 import { hostedConformance } from '../src/hosted-conformance.mjs';
+import { initializeHostedSubject } from '../src/hosted-subject.mjs';
 
 try {
   const event = readJson(process.env.GITHUB_EVENT_PATH);
   const repository = process.env.SOURCE_REPOSITORY;
   if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repository) || repository !== process.env.GITHUB_REPOSITORY) throw new Error('Source repository must be the event repository');
-  const root = resolve('build/hosted'), repo = resolve(root, 'subject.git'); mkdirSync(repo, { recursive: true });
-  git(repo, ['init', '--bare', '--quiet']);
+  const { root, repo } = initializeHostedSubject(resolve('build/hosted'));
   const url = `https://github.com/${repository}.git`;
   git(repo, ['fetch', '--no-write-fetch-head', '--no-tags', url, '+refs/heads/*:refs/heads/*', '+refs/tags/*:refs/tags/*']);
   let result, baseline, consumerHead;

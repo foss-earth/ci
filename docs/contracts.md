@@ -15,12 +15,33 @@ The direct OID must match both the local ref and source advertisement before
 and after inspection. For extracted candidates use the coordinator's explicit
 isolated local publication source until the canonical remote is admitted.
 Git replacement environment/config is disabled for reads and traversal;
-replacement refs and nonempty grafts are rejected. Raw parent recursion and
+replacement refs and nonempty grafts are rejected. Subject-local
+includes/URL rewrites/command-capable settings are also rejected
+before operations; isolated publication replicas avoid unsafe inspected config.
+Raw parent recursion and
 content-address verification detect missing/corrupt objects independently of
 Git's traversal overlays. Annotated tags are resolved recursively. Every raw
 commit has one author/committer/tree and valid timestamp/timezone/UTF-8 metadata.
 Legacy non-UTF-8 metadata requires explicit coordinator repair/provenance review;
 it cannot silently pass. Valid optional signed headers may have continuations.
+
+Selected annotated tags and every nested tag object are also inspected: raw tagger
+and identity-bearing message trailers use the same policy. Scope records the exact
+tag objects/targets and checked-object digest. Lightweight tags add no metadata.
+Valid historical tags without a tagger remain explicit in known-alias mode; strict
+approved mode fails missing identity. Malformed tag headers/target types fail
+incomplete. Signature payloads are separate from the signed tag message's trailers.
+Only a complete terminal signature block is removed; markers or trailing
+attribution outside that block cannot hide the terminal trailer paragraph.
+Malformed/nonterminal/multiple unquoted armor blocks fail incomplete, with
+the affected object ID. Fenced/quoted examples remain message prose. Armor is
+parsed structurally; no cryptographic signature verification is claimed.
+
+Git addresses are opaque recorded identity strings, including historical non-mailbox
+or empty values. No @ is required and none is invented. AI names are checked
+independently; domain rules apply only when an @ exists. Strict mode preserves
+reviewed historical tuples and rejects unknown ones. Delimiters and header
+timestamps still must be structurally valid.
 
 Identity normalization is NFKC, trimming, collapsed Unicode whitespace and
 lowercase. Whole normalized name/address matches and exact domain or its explicit
@@ -54,6 +75,10 @@ protecting each remote. Permissions are contents:read; no secrets inheritance.
 PR, merge_group checks_requested and all pushes trigger the canonical caller.
 The reusable workflow verifies its sealed trusted executable/policy/fixture
 hashes before running code; an input revision cannot replace these bytes.
+The hosted runtime explicitly selects Node 22 using reviewed immutable
+[setup-node source](https://github.com/actions/setup-node/commit/49933ea5288caeca8642d1e84afbd3f7d6820020).
+Local receipts name the actual runtime; Linux/hosted compatibility still needs
+its own receipt rather than being inferred from this configuration.
 
 Conformance v1 requires consumer path, externally reviewed release descriptor,
 and ignored owner build output root. The descriptor records package/version,
@@ -70,3 +95,11 @@ merge or squash, explicit final author/committer raw identities/message and
 optional tighter config. It validates proposed ancestry first, constructs only
 an unattached commit object and audits its final metadata. Ready is evidence,
 not admission: admission=false always. Other merge methods remain disabled.
+
+The optional trusted controller exports prepareAdmission/controlledAdmission,
+GitLeaseTransport and GitHub metadata gateway. [Service binding](controller.md)
+describes complete publication scope, canonical baseline/release integrity,
+mandatory installed conformance/owner witnesses and separately bound guarded
+complete-snapshot publication. A protected-base expected-old update alone does
+not cover proposal or other-ref races.
+Missing binding fails closed; no package installation provisions hosted admission.

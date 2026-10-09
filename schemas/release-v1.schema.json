@@ -5,6 +5,7 @@
     "schemaVersion": { "const": 1 }, "package": { "const": "@foss-earth/ci" }, "version": { "type": "string" },
     "revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
     "artifactSha256": { "$ref": "#/$defs/digest" }, "policySha256": { "$ref": "#/$defs/digest" },
+    "sizeBytes": { "type": "integer", "minimum": 1 },
     "files": { "type": "object", "minProperties": 6, "additionalProperties": { "$ref": "#/$defs/digest" } }
   }, "$defs": { "digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
 }

@@ -37,13 +37,15 @@ export function loadPolicy(config = {}) {
   return { id: canonical.id, version: canonical.version, sha256: digest(bytes), mode: config.mode ?? 'deny-known', names, emails, domains, approved, keys: unique(canonical.identityTrailerKeys, 'identityTrailerKeys', trailerKey) };
 }
 export function parseIdentity(value, header = false) {
-  const match = (header ? /^(.*?)\s*<([^<>\s]+@[^<>\s]+)> (-?\d+) ([+-]\d{4})$/ : /^(.*?)\s*<([^<>\s]+@[^<>\s]+)>\s*$/).exec(value);
+  const match = (header ? /^(.*?)\s*<([^<>\r\n]*)> (-?\d+) ([+-]\d{4})$/ : /^(.*?)\s*<([^<>\r\n]*)>\s*$/).exec(value);
   if (!match || !match[1].trim() || /[<>\r\n]/.test(match[1])) throw new AuditError('metadata.identity', 'Malformed identity-bearing metadata; use Name <address>');
   if (header && (Number(match[4].slice(1, 3)) > 23 || Number(match[4].slice(3)) > 59)) throw new AuditError('metadata.timezone', 'Invalid commit timezone');
   return { name: normalize(match[1]), email: normalize(match[2]) };
 }
 export function identityRule(identity, policy) {
-  if (policy.names.has(identity.name) || policy.emails.has(identity.email) || [...policy.domains].some(d => identity.email.split('@')[1] === d || identity.email.split('@')[1].endsWith(`.${d}`))) return 'attribution.ai-identity';
+  const at = identity.email.lastIndexOf('@');
+  const domain = at < 0 ? null : identity.email.slice(at + 1);
+  if (policy.names.has(identity.name) || policy.emails.has(identity.email) || domain !== null && [...policy.domains].some(d => domain === d || domain.endsWith(`.${d}`))) return 'attribution.ai-identity';
   if (policy.mode === 'approved' && !policy.approved.has(`${identity.name}\0${identity.email}`)) return 'attribution.unapproved-identity';
   return null;
 }

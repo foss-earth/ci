@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdirSync, writeFileSync, readdirSync, readFileSync, cpSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readdirSync, readFileSync, cpSync, renameSync, symlinkSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { conformance } from '../src/conformance.mjs';
 import { callerTemplate, consumerConfig, policyRule, contributionTemplate, agentTemplate } from '../src/templates.mjs';
@@ -45,4 +45,8 @@ test('templates contain exact policy rule and shared caller has no skips', () =>
   const caller = callerTemplate('a'.repeat(40)); assert.ok(caller.includes('merge_group:')); assert.ok(caller.includes('  push:'));
   assert.ok(!/paths:|paths-ignore:|if:|workflow_dispatch:|secrets:/.test(caller));
   assert.throws(() => callerTemplate('main'));
+});
+test('exact installed conformance rejects an intact neighboring source symlink', () => {
+  const { repo, release, installed } = consumer('source-link'); const retained = resolve(repo, 'build/retained-component'); mkdirSync(resolve(repo, 'build'), { recursive: true }); renameSync(installed, retained); symlinkSync(retained, installed, 'dir');
+  const result = conformance({ consumer: repo, release, outputRoot: resolve(repo, 'build/conformance') }); assert.equal(result.exitCode, 2); assert.ok(result.errors.some(error => error.includes('source symlink')));
 });
