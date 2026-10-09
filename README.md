@@ -52,3 +52,10 @@ See [contracts](docs/contracts.md), [admission and bootstrap](docs/admission.md)
 and [consumer migration](docs/consumer-migration.md). Hosted admission and
 cleanup are coordinator responsibilities. No hosted acceptance is claimed by
 local tests.
+
+## Project policies
+
+- [Code of conduct](CODE_OF_CONDUCT.md)
+- [Contributing](CONTRIBUTING.md)
+- [AGPL-3.0 license](LICENSE)
+- [Security](SECURITY.md)

@@ -2,18 +2,18 @@
 
 YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.
 
-AI author, committer and equivalent identity-bearing trailers are also forbidden.
-Preserve human credit, licenses and asset provenance. Ordinary technical prose
-and quoted examples are permitted. Names are exact normalized aliases, never
-arbitrary substrings. Unknown identities fail when approved admission is enabled.
+Thank you for improving this project. Before opening a pull request, discuss material new features or large changes in an issue so the implementation fits the project's direction.
 
-Run `npm run typecheck`, `npm run lint` and affected Node test files; finish with
-`npm run ci` once. These JavaScript-only tools have no runtime dependencies.
-The typecheck script checks JavaScript syntax/JSON; it is not a TypeScript type
-analysis. Tests run with one worker and create synthetic histories in ignored
-build/ only. Never publish these histories. Reserve the shared migration slot.
+## Development
 
-Policy/validator/caller changes require a separate trusted review and release
-rollout. New aliases and non-AI automation entries require an auditable review.
-No exception can allow canonical AI attribution. The coordinator owns historical
-cleanup, protected-ref settings and hosted negative admission rehearsals.
+Follow this repository README for setup and checks. Use public exports, linked source, pinned packages or supported hybrid selections. Follow the owning language, strict types, formatting and lint rules; keep changes focused with meaningful tests. Do not add generated build output, credentials, API keys, vendor copies or unrelated formatting changes.
+
+## Rights and licensing
+
+By submitting a contribution, you confirm that you have the right to submit it under the repository's applicable licensing terms and that it does not include confidential, proprietary, or copied material without permission. Identify all third-party code, data, models, textures, sounds, fonts, and references in the pull request.
+
+Creative assets need explicit provenance records and the owning repository asset-license guidance. Do not submit a model or reference merely because it is publicly downloadable.
+
+## Pull requests
+
+Explain the user-visible result, relevant tests, and any limitations. Update documentation when public behavior, setup, data sources, or licensing changes. Maintainers may request a smaller change, more tests, or provenance evidence before merge.
