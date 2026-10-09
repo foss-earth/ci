@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "component": "@foss-earth/ci",
-  "revision": "77f57ef367b5ee23e5ad9c76e0f5074d42372f60",
-  "artifactSha256": "8c593cf8f35929adb334f800216802ba910a0965c5204019487432caa765f8f2",
+  "revision": "5f26ec87f4ab47939eec6930c5d8d89bc4b23e4a",
+  "artifactSha256": "14d941e680a87e9ec0af3c52f52e9fc1d051d9b282dfdf555a51bccb79ce2632",
   "policySha256": "9ca88bf5861685e22e65e5f39fa65b05faaf9c218875fccbecce1b9f2dca5bd3",
   "entryPoint": [
     "node",

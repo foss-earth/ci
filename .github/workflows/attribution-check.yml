@@ -8,9 +8,9 @@ permissions:
   contents: read
 jobs:
   attribution:
-    uses: foss-earth/ci/.github/workflows/attribution.yml@77f57ef367b5ee23e5ad9c76e0f5074d42372f60
+    uses: foss-earth/ci/.github/workflows/attribution.yml@5f26ec87f4ab47939eec6930c5d8d89bc4b23e4a
     with:
-      validator-revision: 77f57ef367b5ee23e5ad9c76e0f5074d42372f60
+      validator-revision: 5f26ec87f4ab47939eec6930c5d8d89bc4b23e4a
       source-repository: ${{ github.repository }}
     permissions:
       contents: read

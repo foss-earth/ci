@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "package": "@foss-earth/ci",
   "version": "0.1.0",
-  "revision": "77f57ef367b5ee23e5ad9c76e0f5074d42372f60",
-  "artifactSha256": "8c593cf8f35929adb334f800216802ba910a0965c5204019487432caa765f8f2",
+  "revision": "5f26ec87f4ab47939eec6930c5d8d89bc4b23e4a",
+  "artifactSha256": "14d941e680a87e9ec0af3c52f52e9fc1d051d9b282dfdf555a51bccb79ce2632",
   "policySha256": "9ca88bf5861685e22e65e5f39fa65b05faaf9c218875fccbecce1b9f2dca5bd3",
   "files": {
     "bin/attribution.mjs": "a9a49c9d0f0592cabe132c08f1c34e79bad0097bb97a01b57f3ff4b529ccd3d7",
@@ -18,7 +18,7 @@
     "src/conformance.mjs": "14784e92c3a39300ec1679f69a583c20728442b3eefb8e81f705f4d3d6f202f3",
     "src/fixtures.mjs": "64e016196d0330031b6dd609a93ecd6f136856a4c9ab8421d5d3aeff13db6889",
     "src/git.mjs": "6173ad0515517416ea7b46f20d38f006fc00b13a2132b49c8b1d9db5277afb83",
-    "src/hosted-conformance.mjs": "efb8951468f2d411526dc6a085071e5ff693aadaa4c882c653085537e2193614",
+    "src/hosted-conformance.mjs": "9a36a41a6b61a1feb133896f0760b6a385feafc1dac5a1105fc85580882d3266",
     "src/policy.mjs": "b76e01fbbbf58b27aa8b10f2b00cf1118cad2f8d678dc587f503e3b3788805e9",
     "src/templates.mjs": "c4b019226f58f3339ece8b545137226a3cf9a46dde7895f36d6cec3c0c63a1ef"
   }
