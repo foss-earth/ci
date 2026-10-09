@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "foss-earth/attribution",
+  "version": "1.0.0",
+  "rule": "YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.",
+  "normalization": "Unicode NFKC, trim, collapse Unicode whitespace, lowercase. Names match whole normalized names; emails match whole normalized addresses; domains match exact domain or explicit subdomain suffix.",
+  "forbiddenNames": ["Claude", "Claude Code", "Anthropic Claude", "Cursor", "Cursor Agent", "Cursor AI", "Codex", "OpenAI Codex", "ChatGPT", "GitHub Copilot", "Copilot", "Devin", "Gemini", "Google Gemini", "Amazon Q"],
+  "forbiddenEmails": ["claude@anthropic.com", "codex@openai.com", "cursoragent@cursor.com", "copilot@github.com"],
+  "forbiddenDomains": [],
+  "identityTrailerKeys": ["co-authored-by", "authored-by", "committed-by", "signed-off-by", "reviewed-by", "tested-by", "assisted-by", "generated-by", "ai-author", "ai-coauthor"],
+  "automationExceptions": [],
+  "limits": "Reviewed aliases only, not universal AI detection or proof of human identity. Strict admission requires a separately reviewed approved identity registry; no organization override can remove canonical prohibitions. Company domains are not classified wholesale as AI identities."
+}
