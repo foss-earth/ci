@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "package": "@foss-earth/ci",
+  "version": "0.1.0",
+  "revision": "77f57ef367b5ee23e5ad9c76e0f5074d42372f60",
+  "artifactSha256": "8c593cf8f35929adb334f800216802ba910a0965c5204019487432caa765f8f2",
+  "policySha256": "9ca88bf5861685e22e65e5f39fa65b05faaf9c218875fccbecce1b9f2dca5bd3",
+  "files": {
+    "bin/attribution.mjs": "a9a49c9d0f0592cabe132c08f1c34e79bad0097bb97a01b57f3ff4b529ccd3d7",
+    "bin/candidate.mjs": "b067efed3f64c9e2c99e6ef8600abb1136e576cb56988946f259f12d3c8c3670",
+    "bin/conformance.mjs": "a62d7a29ddd7f19eba9f5d71fefe5eec49c3fc5000ea6ffd5a9356a2663ffe1a",
+    "bin/hosted.mjs": "2268596e7946856fe3fb41c129e0441cfd37387fc6af8c761cb890a03537a68c",
+    "bin/scaffold.mjs": "cc31c34c848f3ac88f7d23734a98a9f72b139d7ecf5c3c0f4a178bd1b2b0c3b2",
+    "fixtures/matrix-v1.json": "66c472b358ad4e2a2d9cd1d1c2402e2831dcef91904b509a39bc9aca0cfb41a3",
+    "policy/attribution-v1.json": "9ca88bf5861685e22e65e5f39fa65b05faaf9c218875fccbecce1b9f2dca5bd3",
+    "src/audit.mjs": "3751546325f2c3c02b0cb9e3716e8b64bc88bfa8bab4afe9628db724d1d93ac3",
+    "src/candidate.mjs": "8a1224dae838d43aae4c9ad32369420a1b803d80d6c6006e193aac762cfd0573",
+    "src/conformance.mjs": "14784e92c3a39300ec1679f69a583c20728442b3eefb8e81f705f4d3d6f202f3",
+    "src/fixtures.mjs": "64e016196d0330031b6dd609a93ecd6f136856a4c9ab8421d5d3aeff13db6889",
+    "src/git.mjs": "6173ad0515517416ea7b46f20d38f006fc00b13a2132b49c8b1d9db5277afb83",
+    "src/hosted-conformance.mjs": "efb8951468f2d411526dc6a085071e5ff693aadaa4c882c653085537e2193614",
+    "src/policy.mjs": "b76e01fbbbf58b27aa8b10f2b00cf1118cad2f8d678dc587f503e3b3788805e9",
+    "src/templates.mjs": "c4b019226f58f3339ece8b545137226a3cf9a46dde7895f36d6cec3c0c63a1ef"
+  }
+}
