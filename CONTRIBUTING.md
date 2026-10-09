@@ -1,7 +1,5 @@
 # Contributing
 
-YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.
-
 Thank you for improving this project. Before opening a pull request, discuss material new features or large changes in an issue so the implementation fits the project's direction.
 
 ## Development
@@ -17,3 +15,7 @@ Creative assets need explicit provenance records and the owning repository asset
 ## Pull requests
 
 Explain the user-visible result, relevant tests, and any limitations. Update documentation when public behavior, setup, data sources, or licensing changes. Maintainers may request a smaller change, more tests, or provenance evidence before merge.
+
+## Commit attribution
+
+YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.

@@ -2,9 +2,7 @@
 
 `@foss-earth/ci` is the independent common policy component. It has no globe,
 flight or campus runtime dependency, and uses Node 22+ and Git. Version 0.1.0
-is a private staging candidate; registry publication is separate.
-
-YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.
+is published as source; registry publication is separate.
 
 The canonical policy also rejects AI author and committer identities and
 structured attribution trailers. Deny-known mode identifies reviewed aliases;
