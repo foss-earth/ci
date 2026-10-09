@@ -30,7 +30,7 @@ jobs:
           14784e92c3a39300ec1679f69a583c20728442b3eefb8e81f705f4d3d6f202f3  src/conformance.mjs
           64e016196d0330031b6dd609a93ecd6f136856a4c9ab8421d5d3aeff13db6889  src/fixtures.mjs
           6173ad0515517416ea7b46f20d38f006fc00b13a2132b49c8b1d9db5277afb83  src/git.mjs
-          efb8951468f2d411526dc6a085071e5ff693aadaa4c882c653085537e2193614  src/hosted-conformance.mjs
+          9a36a41a6b61a1feb133896f0760b6a385feafc1dac5a1105fc85580882d3266  src/hosted-conformance.mjs
           b76e01fbbbf58b27aa8b10f2b00cf1118cad2f8d678dc587f503e3b3788805e9  src/policy.mjs
           c4b019226f58f3339ece8b545137226a3cf9a46dde7895f36d6cec3c0c63a1ef  src/templates.mjs
           a9a49c9d0f0592cabe132c08f1c34e79bad0097bb97a01b57f3ff4b529ccd3d7  bin/attribution.mjs

@@ -20,7 +20,7 @@ export function hostedConformance({ subject, baseline, head, root, toolRoot }) {
   writeFileSync(resolve(consumer, '.gitignore'), '/build/\n/node_modules/\n');
   writeFileSync(resolve(consumer, 'package.json'), '{"name":"hosted-subject","private":true}');
   writeFileSync(resolve(consumer, '.attribution.json'), git(subject, ['show', `${head}:.attribution.json`]));
-  writeFileSync(resolve(consumer, '.github/workflows/attribution-check.yml'), git(subject, ['show', `${head}:.github/workflows/attribution-check.yml`]));
+  writeFileSync(resolve(consumer, '.github/workflows/attribution-check.yml'), git(subject, ['show', `${head}:.github/workflows/attribution-check.yml`], undefined, true));
   const artifact = resolve(root, 'common.tgz'); writeFileSync(artifact, archive);
   const cache = resolve(root, 'npm-cache'), temp = resolve(root, 'tmp'); mkdirSync(cache, { recursive: true }); mkdirSync(temp, { recursive: true });
   const install = spawnSync('npm', ['install', '--prefix', consumer, '--ignore-scripts', '--no-audit', '--no-fund', '--offline', artifact], { encoding: 'utf8', env: { ...process.env, npm_config_cache: cache, TMPDIR: temp }, maxBuffer: 8 * 1024 * 1024 });
