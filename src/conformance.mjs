@@ -1,4 +1,4 @@
-import { readFileSync, realpathSync, lstatSync, readdirSync } from 'node:fs';
+import { readFileSync, realpathSync, lstatSync, readdirSync, existsSync } from 'node:fs';
 import { resolve, relative } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { isDeepStrictEqual } from 'node:util';
@@ -12,7 +12,10 @@ export function verifyReleaseIntegrity(installedRoot, release, additional = []) 
   const requested = resolve(installedRoot);
   if (!lstatSync(requested).isDirectory()) throw new Error('Installed common component must be an artifact directory, not a neighboring source symlink');
   const installed = realpathSync(requested);
-  for (const dir of ['src', 'bin', 'policy', 'fixtures']) for (const name of readdirSync(resolve(installed, dir))) if (/\.(mjs|json)$/.test(name) && !/^[a-f0-9]{64}$/.test(release.files[`${dir}/${name}`] ?? '')) throw new Error('Trusted release omits an installed executable/policy/fixture file');
+  const fullSeal = existsSync(resolve(installed, 'src/release.mjs')) || release.executableSealVersion === 2;
+  if (fullSeal && release.executableSealVersion !== 2 || release.executableSealVersion !== undefined && ![1, 2].includes(release.executableSealVersion)) throw new Error('Current common component requires complete executable seal version2');
+  for (const dir of ['src', 'bin', 'policy', 'fixtures', ...(fullSeal ? ['scripts'] : [])]) for (const name of readdirSync(resolve(installed, dir))) if (/\.(mjs|json)$/.test(name) && !/^[a-f0-9]{64}$/.test(release.files[`${dir}/${name}`] ?? '')) throw new Error('Trusted release omits an installed executable/policy/fixture file');
+  if (fullSeal && !/^[a-f0-9]{64}$/.test(release.files['package.json'] ?? '')) throw new Error('Trusted release omits package.json executable entry contracts');
   for (const path of ['bin/attribution.mjs', 'src/audit.mjs', 'src/git.mjs', 'src/policy.mjs', 'fixtures/matrix-v1.json', 'policy/attribution-v1.json', ...additional]) if (!/^[a-f0-9]{64}$/.test(release.files[path] ?? '')) throw new Error('Trusted release omits a required common component file');
   for (const [path, expected] of Object.entries(release.files)) {
     if (!path || path.split('/').some(part => !part || part === '.' || part === '..') || path.includes('\\') || path.startsWith('/') || !/^[a-f0-9]{64}$/.test(expected)) throw new Error('Invalid release file path or digest');

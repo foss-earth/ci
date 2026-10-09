@@ -6,6 +6,7 @@ import { callerTemplate, consumerConfig } from './templates.mjs';
 import { loadPolicy, digest } from './policy.mjs';
 import { verifyReleaseIntegrity } from './conformance.mjs';
 import { fileURLToPath } from 'node:url';
+import { readReleaseArtifact } from './release.mjs';
 
 export class GitLeaseTransport {
   constructor({ repo, source }) {
@@ -48,6 +49,10 @@ export function prepareAdmission({ repo, target, proposalRef, expectedHead, meta
   const baselineConfig = JSON.parse(git(repo, ['show', `${base}:.attribution.json`]));
   const baselineCaller = git(repo, ['show', `${base}:.github/workflows/attribution-check.yml`], undefined, true).toString('utf8');
   if (!isDeepStrictEqual(baseline, release) || !isDeepStrictEqual(proposedRelease, release) || !isDeepStrictEqual(baselineConfig, consumerConfig(release)) || !isDeepStrictEqual(proposedConfig, consumerConfig(release)) || baselineCaller !== callerTemplate(release.revision) || caller !== baselineCaller) throw new AuditError('admission.trusted-baseline', 'Caller/config/release pin replacement requires the separate trusted update path');
+  try {
+    const baselineArtifact = readReleaseArtifact(repo, base, release), proposedArtifact = readReleaseArtifact(repo, head, release);
+    if (!baselineArtifact.equals(proposedArtifact)) throw new Error('Artifact changed');
+  } catch { throw new AuditError('admission.trusted-artifact', 'Dependency artifact replacement or omission requires the separate trusted update path'); }
   const publication = { schemaVersion: 1, source: { id: target, location: binding.source }, refs: binding.publicationRefs.map(name => ({ name, oid: advertised.get(name) })) };
   const prior = audit({ repo, mode: 'publication', publication, config: config.policy });
   if (prior.exitCode !== 0) return { ready: false, admission: false, exitCode: prior.exitCode, prior };

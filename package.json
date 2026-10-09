@@ -21,7 +21,7 @@
     "./controller": "./src/controller.mjs",
     "./github-checks": "./src/github-checks.mjs"
   },
-  "files": ["bin", "src", "policy", "fixtures", "templates", "schemas", "docs", ".github/workflows", "README.md", "CONTRIBUTING.md", "AGENTS.md", "LICENSE", "PROVENANCE.json"],
+  "files": ["bin", "src", "policy", "fixtures", "scripts", "templates", "schemas", "docs", ".github/workflows", "README.md", "CONTRIBUTING.md", "AGENTS.md", "LICENSE", "PROVENANCE.json"],
   "scripts": {
     "attribution": "node bin/attribution.mjs",
     "conformance": "node bin/conformance.mjs",

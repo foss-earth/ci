@@ -12,8 +12,11 @@ const root = fixtureRoot(packageRoot, resolve(packageRoot, 'build/fixtures/contr
 function fixture() {
   const repo = createRepo(root, `subject-${serial++}`);
   const files = {};
-  for (const dir of ['bin', 'src', 'policy', 'fixtures']) for (const name of readdirSync(resolve(packageRoot, dir))) files[`${dir}/${name}`] = digest(readFileSync(resolve(packageRoot, dir, name)));
-  const release = { schemaVersion: 1, package: '@foss-earth/ci', version: 'synthetic', revision: '1'.repeat(40), artifactSha256: '2'.repeat(64), policySha256: loadPolicy().sha256, files };
+  for (const dir of ['bin', 'src', 'policy', 'fixtures', 'scripts']) for (const name of readdirSync(resolve(packageRoot, dir))) files[`${dir}/${name}`] = digest(readFileSync(resolve(packageRoot, dir, name)));
+  files['package.json'] = digest(readFileSync(resolve(packageRoot, 'package.json')));
+  const artifact = Buffer.from('Synthetic immutable archive binding');
+  const release = { schemaVersion: 1, executableSealVersion: 2, package: '@foss-earth/ci', version: 'synthetic', revision: '1'.repeat(40), artifactPath: `deps/foss-earth-ci-${'1'.repeat(40)}.tgz`, artifactSha256: digest(artifact), sizeBytes: artifact.length, policySha256: loadPolicy().sha256, files };
+  mkdirSync(resolve(repo, 'deps')); writeFileSync(resolve(repo, release.artifactPath), artifact);
   mkdirSync(resolve(repo, '.github/workflows'), { recursive: true });
   writeFileSync(resolve(repo, '.attribution-release.json'), JSON.stringify(release)); writeFileSync(resolve(repo, '.attribution.json'), JSON.stringify(consumerConfig(release))); writeFileSync(resolve(repo, '.github/workflows/attribution-check.yml'), callerTemplate(release.revision));
   git(repo, ['add', '.']); git(repo, ['-c', 'user.name=Sample Contributor', '-c', 'user.email=contributor@example.invalid', 'commit', '--quiet', '-m', 'Clean baseline']);
@@ -107,6 +110,13 @@ test('submitted caller replacement and installed-controller hash mismatch reject
   const other = fixture(); git(other.repo, ['checkout', '--quiet', 'proposal']); writeFileSync(resolve(other.repo, '.github/workflows/attribution-check.yml'), 'name: Mutable skipped caller\n'); git(other.repo, ['add', '.github/workflows/attribution-check.yml']); git(other.repo, ['-c', 'user.name=Sample Contributor', '-c', 'user.email=contributor@example.invalid', 'commit', '--quiet', '-m', 'Synthetic caller replacement']);
   other.input.expectedHead = git(other.repo, ['rev-parse', 'HEAD']); git(other.repo, ['push', other.remote, 'refs/heads/proposal:refs/heads/proposal']);
   assert.throws(() => prepareAdmission(other.input), /separate trusted update path/);
+});
+for (const kind of ['replace', 'delete']) test(`ordinary proposal cannot ${kind} the protected dependency artifact`, () => {
+  const f = fixture(); git(f.repo, ['checkout', '--quiet', 'proposal']);
+  if (kind === 'delete') git(f.repo, ['rm', '--', f.config.ciRelease.artifactPath]); else writeFileSync(resolve(f.repo, f.config.ciRelease.artifactPath), 'Synthetic replacement artifact');
+  git(f.repo, ['add', '.']); git(f.repo, ['-c', 'user.name=Sample Contributor', '-c', 'user.email=contributor@example.invalid', 'commit', '--quiet', '-m', 'Synthetic dependency replacement']);
+  f.input.expectedHead = git(f.repo, ['rev-parse', 'HEAD']); git(f.repo, ['push', f.remote, 'refs/heads/proposal:refs/heads/proposal']);
+  assert.throws(() => prepareAdmission(f.input), /separate trusted update path/); assert.equal(git(f.remote, ['show-ref', '--hash', 'refs/heads/main']), f.base);
 });
 test('GitHub metadata alone cannot prove a trusted job; witness verifier is mandatory', async () => {
   const candidate = '4'.repeat(40), workflowSha = '3'.repeat(40), workflowPath = 'fixture/trusted/.github/workflows/owner.yml@' + workflowSha;

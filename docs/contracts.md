@@ -82,8 +82,14 @@ its own receipt rather than being inferred from this configuration.
 
 Conformance v1 requires consumer path, externally reviewed release descriptor,
 and ignored owner build output root. The descriptor records package/version,
-revision, exact archive SHA-256, policy SHA-256 and installed component file
-digests. `.attribution.json` must declare that exact release and installed Node
+revision, canonical `artifactPath`, exact archive SHA-256 and `sizeBytes`, policy
+SHA-256 and installed component file digests. Current descriptors require
+`executableSealVersion: 2`, sealing package.json and every tracked bin, src,
+policy, fixtures and scripts file. Hosted checks bind that complete inventory to
+the immutable source revision and read the exact regular Git blob from the
+protected baseline, rather than recompressing it. Installed conformance checks
+the seal before importing the installed component. `.attribution.json` must
+declare that exact release and installed Node
 entry point. Caller must match the canonical unconditional SHA-pinned template.
 The actual installed entry point runs the shared allowed-human plus Claude,
 Cursor and Codex author/committer/coauthor matrix. Result names the consumer,

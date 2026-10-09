@@ -1,9 +1,11 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object", "required": ["schemaVersion", "package", "version", "revision", "artifactSha256", "policySha256", "files"],
+  "type": "object", "required": ["schemaVersion", "executableSealVersion", "package", "version", "revision", "artifactPath", "artifactSha256", "sizeBytes", "policySha256", "files"],
   "properties": {
     "schemaVersion": { "const": 1 }, "package": { "const": "@foss-earth/ci" }, "version": { "type": "string" },
     "revision": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "executableSealVersion": { "const": 2 },
+    "artifactPath": { "type": "string", "pattern": "^deps/foss-earth-ci-[a-f0-9]{40}\\.tgz$" },
     "artifactSha256": { "$ref": "#/$defs/digest" }, "policySha256": { "$ref": "#/$defs/digest" },
     "sizeBytes": { "type": "integer", "minimum": 1 },
     "files": { "type": "object", "minProperties": 6, "additionalProperties": { "$ref": "#/$defs/digest" } }

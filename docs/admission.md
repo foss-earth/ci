@@ -12,11 +12,15 @@ In the hosted job the shared implementation comes from the reviewed SHA and
 must match the byte hashes sealed into the immutable reusable workflow. The
 subject is fetched as Git objects, never checked out or built. The trusted
 release descriptor comes from the event's protected baseline. The PR's
-replacement descriptor/validator cannot supply trusted policy. The exact Git
-archive is recreated, verified against its baseline digest, installed with
+replacement descriptor/validator cannot supply trusted policy. The descriptor's
+complete executable inventory is bound to immutable source Git blobs. The exact
+reviewed archive is read from its canonical regular Git blob in the protected
+baseline, verified against its digest and size, and installed with
 scripts disabled into an ignored synthetic consumer, and shared conformance
 checks the submitted caller/config and actual installed executable. Updating
-the release descriptor or caller pin needs the separate trusted update path.
+the release descriptor, caller pin or tracked archive needs the separate trusted
+update path. Ordinary admission rejects archive deletion or replacement. Hosted
+code never recompresses an archive or substitutes proposed/current bytes.
 The workflow needs no application secrets and persists no checkout credentials.
 
 A consumer can still replace/skip a PR workflow, so a reusable SHA caller alone

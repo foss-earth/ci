@@ -1,8 +1,14 @@
 {
   "schemaVersion": 1,
   "id": "foss-earth/attribution",
-  "version": "1.0.0",
-  "rule": "YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.",
+  "version": "1.0.1",
+  "rule": "You cannot have AI as a co-author, or your contributions will be rejected.",
+  "rationale": {
+    "advertising": "Branded AI contribution credits put a vendor name in permanent public contribution history and can imply endorsement. This project treats that promotion as advertising.",
+    "independence": "Advertising is banned in contribution credits to keep contributor recognition independent of vendor promotion and preserve clear responsibility.",
+    "responsibility": "The person submitting work remains accountable for accuracy, review responses, provenance and rights.",
+    "preservation": "Required license notices, factual tool documentation and legitimate human credit remain valid."
+  },
   "normalization": "Unicode NFKC, trim, collapse Unicode whitespace, lowercase. Names match whole normalized names; emails match whole normalized addresses; domains match exact domain or explicit subdomain suffix.",
   "forbiddenNames": ["Claude", "Claude Code", "Anthropic Claude", "Cursor", "Cursor Agent", "Cursor AI", "Codex", "OpenAI Codex", "ChatGPT", "GitHub Copilot", "Copilot", "Devin", "Gemini", "Google Gemini", "Amazon Q"],
   "forbiddenEmails": ["claude@anthropic.com", "codex@openai.com", "cursoragent@cursor.com", "copilot@github.com"],

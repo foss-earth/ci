@@ -19,3 +19,26 @@ for (const kind of ['file', 'parent', 'node-modules', 'dangling']) test(`self-ad
   assert.equal(readFileSync(resolve(retained, 'identity.json'), 'utf8'), 'preserved evidence');
   assert.equal(existsSync(resolve(owner, 'build')), false); assert.equal(existsSync(resolve(retained, 'workflows')), false);
 });
+for (const size of [undefined, 0, 1.5, '4', 5]) test(`self-adoption refuses incorrect declared artifact size ${String(size)} before backup or installation`, () => {
+  const owner = resolve(root, `size-${String(size)}`), artifact = resolve(root, `size-${String(size)}.tgz`), descriptor = resolve(root, `size-${String(size)}-release.json`);
+  mkdirSync(owner); const bytes = Buffer.from('four'); writeFileSync(artifact, bytes);
+  writeFileSync(descriptor, JSON.stringify({ artifactSha256: digest(bytes), sizeBytes: size }));
+  writeFileSync(resolve(owner, '.attribution.json'), 'retained prior adoption');
+  const result = spawnSync(process.execPath, [resolve(packageRoot, 'scripts/bootstrap-self.mjs'), descriptor, artifact, '--reviewed-update'], { cwd: owner, encoding: 'utf8' });
+  assert.notEqual(result.status, 0); assert.match(result.stderr, /Reviewed artifact size mismatch before installation/);
+  assert.equal(readFileSync(resolve(owner, '.attribution.json'), 'utf8'), 'retained prior adoption');
+  assert.equal(existsSync(resolve(owner, 'build')), false); assert.equal(existsSync(resolve(owner, 'node_modules')), false);
+});
+for (const kind of ['parent', 'file', 'conflict']) test(`self-adoption preserves ${kind} dependency artifact conflict before backup or installation`, () => {
+  const owner = resolve(root, `dependency-${kind}`), retained = resolve(root, `dependency-retained-${kind}`), artifact = resolve(root, `dependency-${kind}.tgz`), descriptor = resolve(root, `dependency-${kind}.json`);
+  mkdirSync(owner); mkdirSync(retained); const bytes = Buffer.from('four'), revision = '1'.repeat(40), artifactPath = `deps/foss-earth-ci-${revision}.tgz`;
+  writeFileSync(artifact, bytes); writeFileSync(descriptor, JSON.stringify({ revision, artifactPath, artifactSha256: digest(bytes), sizeBytes: bytes.length }));
+  writeFileSync(resolve(retained, 'identity.json'), 'retained dependency evidence');
+  if (kind === 'parent') symlinkSync(retained, resolve(owner, 'deps'), 'dir');
+  else { mkdirSync(resolve(owner, 'deps')); if (kind === 'file') symlinkSync(resolve(retained, 'identity.json'), resolve(owner, artifactPath)); else writeFileSync(resolve(owner, artifactPath), 'retained conflicting bytes'); }
+  const result = spawnSync(process.execPath, [resolve(packageRoot, 'scripts/bootstrap-self.mjs'), descriptor, artifact, '--reviewed-update'], { cwd: owner, encoding: 'utf8' });
+  assert.notEqual(result.status, 0); assert.match(result.stderr, /refuses symlinked|Existing dependency artifact conflicts/);
+  assert.equal(readFileSync(resolve(retained, 'identity.json'), 'utf8'), 'retained dependency evidence');
+  if (kind === 'conflict') assert.equal(readFileSync(resolve(owner, artifactPath), 'utf8'), 'retained conflicting bytes');
+  assert.equal(existsSync(resolve(owner, 'build')), false); assert.equal(existsSync(resolve(owner, 'node_modules')), false);
+});

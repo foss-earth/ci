@@ -31,9 +31,14 @@ and source URLs to avoid credential leakage.
 
 `npm run ci` runs JavaScript/JSON checks and one-worker synthetic regressions.
 Fixtures remain in ignored build/. `npm run package` packages a clean committed
-Git snapshot as an npm-installable deterministic archive and emits a trusted
+Git snapshot as an npm-installable archive reproducible in the recorded producer
+environment, and emits a trusted
 release descriptor with source/artifact/policy/file digests. Consumers pin the
 reviewed source SHA in their actual workflow and install the exact archive.
+The protected baseline tracks those reviewed bytes at the descriptor's canonical
+`deps/foss-earth-ci-SOURCE_SHA.tgz` path. Hosted consumers verify the immutable
+source inventory, archive digest and size before installing that exact blob;
+they do not recreate compressed bytes on a different operating system.
 No neighboring source link qualifies a production install.
 
 Public exports are audit, policy, fixtures, conformance, templates, candidate,
@@ -50,6 +55,12 @@ See [contracts](docs/contracts.md), [admission and bootstrap](docs/admission.md)
 and [consumer migration](docs/consumer-migration.md). Hosted admission and
 cleanup are coordinator responsibilities. No hosted acceptance is claimed by
 local tests.
+
+The qualification branch provides [sanitized hosted diagnostics](docs/hosted-diagnostics.md)
+and exact baseline-artifact transport. Original hosted runs failed after trusted
+byte checks without identifying their failing stage. Local qualification cannot
+replace the coordinator's actual hosted qualification. Frozen9e046dd/ec37278
+receipts and consumer pins remain preserved.
 
 ## Project policies
 

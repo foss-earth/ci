@@ -26,10 +26,18 @@ export function git(repo, args, input, binary = false) {
     if (local.status === 0) {
       const keys = local.stdout.split('\0').filter(Boolean).map(entry => entry.split('\n')[0].toLowerCase());
     if (keys.some(key => /^(include\.|includeif\.|url\.|credential\.|filter\.|gpg\.)/.test(key) || ['core.sshcommand', 'core.gitproxy', 'core.fsmonitor', 'core.attributesfile'].includes(key) || /^merge\..*\.driver$|^diff\..*\.(command|textconv)$|^remote\..*\.(vcs|proxy|uploadpack|receivepack|mirror)$/.test(key))) throw new AuditError('history.unsafe-config', 'Subject configuration contains includes, URL rewrites or command-capable settings; audit an isolated object replica with reviewed transport settings');
-    } else if (!['init', 'clone'].includes(args[0])) throw new AuditError('history.config-read', 'Could not inspect subject local/worktree Git configuration');
+    } else if (!['init', 'clone'].includes(args[0])) {
+      const error = new AuditError('history.config-read', 'Could not inspect subject local/worktree Git configuration');
+      if (Number.isInteger(local.status)) error.status = local.status;
+      throw error;
+    }
   }
   const r = spawnSync('git', [...prefix, ...args], { env, input, encoding: binary ? undefined : 'utf8', maxBuffer: 128 * 1024 * 1024 });
-  if (r.error || r.status !== 0) throw new AuditError('history.git-failure', `Git operation ${args[0]} failed; no inspected hooks or code were executed`);
+  if (r.error || r.status !== 0) {
+    const error = new AuditError('history.git-failure', `Git operation ${args[0]} failed; no inspected hooks or code were executed`);
+    if (Number.isInteger(r.status)) error.status = r.status;
+    throw error;
+  }
   return binary ? r.stdout : r.stdout.trimEnd();
 }
 export function repositorySafety(repo) {

@@ -6,6 +6,7 @@ import { readJson } from '../src/audit.mjs';
 import { callerTemplate, consumerConfig } from '../src/templates.mjs';
 import { digest } from '../src/policy.mjs';
 import { verifyReleaseIntegrity } from '../src/conformance.mjs';
+import { releaseArtifactPath } from '../src/release.mjs';
 const [descriptor, artifact, mode] = process.argv.slice(2);
 if (!descriptor || !artifact || mode !== undefined && mode !== '--reviewed-update') throw new Error('Use RELEASE.json ARTIFACT.tgz [--reviewed-update] in the assigned common checkout');
 const release = readJson(descriptor);
@@ -30,14 +31,25 @@ function writeAdoption(path, bytes) {
   const handle = openSync(target, flags, 0o644); try { writeFileSync(handle, bytes); } finally { closeSync(handle); }
 }
 for (const path of [...paths, 'node_modules/@foss-earth/ci', 'build/npm-cache', 'build/tmp', 'build/bootstrap-updates']) ownedPath(path);
-if (digest(readFileSync(artifact)) !== release.artifactSha256) throw new Error('Reviewed artifact digest mismatch before installation');
+const artifactBytes = readFileSync(artifact);
+if (digest(artifactBytes) !== release.artifactSha256) throw new Error('Reviewed artifact digest mismatch before installation');
+if (!Number.isSafeInteger(release.sizeBytes) || release.sizeBytes < 1 || artifactBytes.length !== release.sizeBytes) throw new Error('Reviewed artifact size mismatch before installation');
+const dependencyPath = releaseArtifactPath(release), dependency = ownedPath(dependencyPath);
+if (existsSync(dependency) && (!lstatSync(dependency).isFile() || digest(readFileSync(dependency)) !== release.artifactSha256)) throw new Error('Existing dependency artifact conflicts with reviewed bytes; preserve and repair manually');
 if (mode !== '--reviewed-update' && paths.some(path => existsSync(path))) throw new Error('Existing self-adoption needs the separately reviewed update path');
 if (mode === '--reviewed-update') {
   const backup = ownedDirectory(`build/bootstrap-updates/${randomUUID()}`);
   for (const [index, path] of paths.entries()) if (existsSync(ownedPath(path))) { if (!lstatSync(ownedPath(path)).isFile()) throw new Error('Self-adoption backup requires a regular file'); copyFileSync(ownedPath(path), resolve(backup, `${index}.previous`), constants.COPYFILE_EXCL); }
 }
 for (const path of ['build/npm-cache', 'build/tmp', '.github/workflows']) ownedDirectory(path);
-const run = spawnSync('npm', ['install', '--no-save', '--package-lock=false', '--ignore-scripts', '--no-audit', '--no-fund', '--offline', resolve(artifact)], { stdio: 'inherit', env: { ...process.env, npm_config_cache: resolve(root, 'build/npm-cache'), TMPDIR: resolve(root, 'build/tmp') } });
+ownedDirectory('deps');
+if (!existsSync(dependency)) {
+  const handle = openSync(dependency, constants.O_WRONLY | constants.O_CREAT | constants.O_EXCL | (constants.O_NOFOLLOW ?? 0), 0o644);
+  try { writeFileSync(handle, artifactBytes); } finally { closeSync(handle); }
+}
+ownedPath(dependencyPath);
+if (!lstatSync(dependency).isFile() || digest(readFileSync(dependency)) !== release.artifactSha256 || lstatSync(dependency).size !== release.sizeBytes) throw new Error('Canonical dependency artifact changed before installation');
+const run = spawnSync('npm', ['install', '--no-save', '--package-lock=false', '--ignore-scripts', '--no-audit', '--no-fund', '--offline', dependency], { stdio: 'inherit', env: { ...process.env, npm_config_cache: resolve(root, 'build/npm-cache'), TMPDIR: resolve(root, 'build/tmp') } });
 if (run.status !== 0) process.exit(run.status ?? 2);
 verifyReleaseIntegrity(resolve(root, 'node_modules/@foss-earth/ci'), release);
 writeAdoption('.attribution-release.json', `${JSON.stringify(release, null, 2)}\n`);

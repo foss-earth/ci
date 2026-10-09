@@ -3,7 +3,12 @@
 This repository owns common metadata validation, attribution policy, reusable CI,
 consumer conformance and generic repository templates. Consumers own their callers.
 
-YOU CANNOT HAVE AI AS A CO-AUTHOR, OR YOUR CONTRIBUTIONS WILL BE REJECTED.
+You cannot have AI as a co-author, or your contributions will be rejected.
+
+Branded AI contribution credits are advertising and may imply endorsement.
+The person submitting work remains accountable for accuracy, review responses,
+provenance and rights. Preserve required license notices, factual tool documentation
+and legitimate human credit.
 
 AI author, committer and identity-bearing attribution trailers are prohibited.
 Preserve permitted human identities and non-AI automation provenance. Never add
