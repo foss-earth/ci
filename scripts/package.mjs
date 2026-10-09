@@ -1,0 +1,17 @@
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
+import { git } from '../src/git.mjs';
+import { digest } from '../src/policy.mjs';
+const root = process.cwd();
+if (git(root, ['status', '--porcelain']).trim()) throw new Error('Package only a committed clean candidate');
+const revision = git(root, ['rev-parse', 'HEAD']);
+const archive = git(root, ['archive', '--format=tar', '--prefix=package/', revision], undefined, true);
+const gzip = gzipSync(archive, { level: 9 });
+const out = resolve(root, 'build/artifacts', revision); mkdirSync(out, { recursive: true });
+const artifact = resolve(out, 'foss-earth-ci-0.1.0.tgz'); writeFileSync(artifact, gzip);
+const files = {};
+for (const path of git(root, ['ls-files']).split('\n')) if (/^(bin|src|policy|fixtures)\//.test(path)) files[path] = digest(readFileSync(resolve(root, path)));
+const descriptor = { schemaVersion: 1, package: '@foss-earth/ci', version: '0.1.0', revision, artifactSha256: digest(gzip), policySha256: files['policy/attribution-v1.json'], files };
+writeFileSync(resolve(out, 'release.json'), `${JSON.stringify(descriptor, null, 2)}\n`);
+process.stdout.write(`${JSON.stringify({ ...descriptor, files: Object.keys(files), artifact, reproducibility: 'git archive of exact commit, gzip with zero timestamp; repeat package yields identical bytes' }, null, 2)}\n`);

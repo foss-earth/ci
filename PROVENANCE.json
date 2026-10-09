@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "repository": "foss-earth/ci",
+  "license": "AGPL-3.0-only",
+  "implementation": "New shared tooling implementation from the reviewed platform brief; no application runtime extracted",
+  "specificationSource": { "repository": "foss-earth/foss-earth.github.io", "revision": "90e23b3ee96f53ec5900afc5991a21fffa58649d", "path": "docs/proposals/implementation/platform-agent.md" },
+  "fixtures": "Synthetic names and reserved example.invalid addresses; no user identities or credentials",
+  "distribution": "Exact Git commit archive with reproducible gzip, descriptor SHA-256 and per-file hashes",
+  "status": "Private staging candidate. Coordinator review and remote admission evidence required before accepted publication."
+}

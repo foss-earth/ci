@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.0",
+  "humans": [
+    { "name": "Sample Contributor", "email": "contributor@example.invalid" },
+    { "name": "Claude Rivera", "email": "claude.rivera@example.invalid" },
+    { "name": "Codex Researcher", "email": "researcher@example.invalid" },
+    { "name": "Cursor Carpenter", "email": "carpenter@example.invalid" }
+  ],
+  "automation": { "name": "Release Automation", "email": "release@example.invalid", "kind": "automation", "review": "synthetic non-AI automation exception fixture" },
+  "ai": [
+    { "name": "Claude", "email": "claude@example.invalid" },
+    { "name": "Claude Code", "email": "claude@anthropic.com" },
+    { "name": "Cursor", "email": "cursor@example.invalid" },
+    { "name": "Cursor Agent", "email": "cursoragent@cursor.com" },
+    { "name": "Codex", "email": "codex@example.invalid" },
+    { "name": "OpenAI Codex", "email": "codex@openai.com" }
+  ],
+  "consumerKinds": ["code", "data-content", "documentation"]
+}

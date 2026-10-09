@@ -1,0 +1,32 @@
+{
+  "name": "@foss-earth/ci",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "engines": { "node": ">=22" },
+  "bin": {
+    "foss-earth-attribution": "bin/attribution.mjs",
+    "foss-earth-ci-conformance": "bin/conformance.mjs",
+    "foss-earth-ci-scaffold": "bin/scaffold.mjs",
+    "foss-earth-ci-candidate": "bin/candidate.mjs"
+  },
+  "exports": {
+    ".": "./src/audit.mjs",
+    "./policy": "./policy/attribution-v1.json",
+    "./fixtures": "./fixtures/matrix-v1.json",
+    "./conformance": "./src/conformance.mjs",
+    "./templates": "./src/templates.mjs",
+    "./candidate": "./src/candidate.mjs"
+  },
+  "files": ["bin", "src", "policy", "fixtures", "templates", "schemas", "docs", ".github/workflows", "README.md", "CONTRIBUTING.md", "AGENTS.md", "LICENSE", "PROVENANCE.json"],
+  "scripts": {
+    "attribution": "node bin/attribution.mjs",
+    "conformance": "node bin/conformance.mjs",
+    "typecheck": "node scripts/check.mjs",
+    "lint": "node scripts/check.mjs",
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "ci": "npm run typecheck && npm run lint && npm test",
+    "package": "node scripts/package.mjs"
+  }
+}

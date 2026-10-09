@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://foss-earth.example.invalid/ci/publication-v1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schemaVersion", "source", "refs"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "source": { "type": "object", "additionalProperties": false, "required": ["id", "location"], "properties": { "id": { "type": "string", "minLength": 1 }, "location": { "type": "string", "minLength": 1 } } },
+    "refs": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["name", "oid"], "properties": { "name": { "type": "string", "pattern": "^refs/(heads|tags)/" }, "oid": { "$ref": "#/$defs/oid" }, "commit": { "$ref": "#/$defs/oid" } } } }
+  },
+  "$defs": { "oid": { "type": "string", "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$" } }
+}

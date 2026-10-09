@@ -1,0 +1,14 @@
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { readJson } from '../src/audit.mjs';
+import { callerTemplate, consumerConfig } from '../src/templates.mjs';
+const [descriptor, artifact] = process.argv.slice(2);
+const release = readJson(descriptor);
+const root = process.cwd();
+for (const path of ['build/npm-cache', 'build/tmp', '.github/workflows']) mkdirSync(resolve(root, path), { recursive: true });
+const run = spawnSync('npm', ['install', '--no-save', '--package-lock=false', '--ignore-scripts', '--no-audit', '--no-fund', '--offline', resolve(artifact)], { stdio: 'inherit', env: { ...process.env, npm_config_cache: resolve(root, 'build/npm-cache'), TMPDIR: resolve(root, 'build/tmp') } });
+if (run.status !== 0) process.exit(run.status ?? 2);
+writeFileSync('.attribution-release.json', `${JSON.stringify(release, null, 2)}\n`, { flag: 'wx' });
+writeFileSync('.attribution.json', `${JSON.stringify(consumerConfig(release), null, 2)}\n`, { flag: 'wx' });
+writeFileSync('.github/workflows/attribution-check.yml', callerTemplate(release.revision));
